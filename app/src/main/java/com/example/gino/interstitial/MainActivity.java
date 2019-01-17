@@ -2,6 +2,7 @@ package com.example.gino.interstitial;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,27 +24,27 @@ public class MainActivity extends AppCompatActivity {
 
         if(ConexionInternet.compruebaConexion(this))
         {
-            //Código para pantalla completa
+            //Pantalla completa
             requestWindowFeature(Window.FEATURE_NO_TITLE);
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
             getSupportActionBar().hide();
 
-
             setContentView(R.layout.activity_main);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //La actividad en forma vertical
+
+
 
             btnPlay=findViewById(R.id.btnPlay);
-
             MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
-            mInterstitialAd=new InterstitialAd(this);
-            mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); //Crea los anuncios - Create ad(Interstitial)
-            mInterstitialAd.loadAd(new AdRequest.Builder().build()); //Carga anuncios - Load ad(Interstitial)
-        }else{
-            DialogoInternet(this);
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); //Crear anuncio
+            mInterstitialAd.loadAd(new AdRequest.Builder().build()); //Cargar el anuncio
+
         }
-
-
+        else {
+            DialogoInternet(MainActivity.this).show(); //Mostrar el mensaje de conexion no establecida
+        }
     }
 
     public AlertDialog.Builder DialogoInternet(Context context) {
@@ -62,10 +63,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         return builder;
-    }
-    public void Mensaje()
-    {
-        Toast.makeText(this,"Hola",Toast.LENGTH_SHORT);
     }
 
     public void Mostrar(View view)
@@ -117,13 +114,12 @@ public class MainActivity extends AppCompatActivity {
                     i++;
                     if(i==20)
                     {
-                        Mensaje();
-                        //i=0;
+                        i=0;
                     }
                 }
             });
         }else{
-            Toast.makeText(this,"Cargando",Toast.LENGTH_LONG);
+            Toast.makeText(this,"Cargando",Toast.LENGTH_LONG).show();
         }
 
     }
