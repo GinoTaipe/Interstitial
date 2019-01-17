@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Interstitial</string>
+    <string name="btnPlay">PLAY</string>
 </resources>
